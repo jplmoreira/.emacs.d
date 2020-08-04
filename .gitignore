@@ -1,0 +1,6 @@
+auto-save-list
+autosaves
+backups
+elpa
+garbage.el
+*.data
