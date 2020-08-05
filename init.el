@@ -90,4 +90,6 @@
   :config
   (evil-mode 1))
 
+(use-package evil-anzu)
+
 (load "~/.emacs.d/hotkeys")
