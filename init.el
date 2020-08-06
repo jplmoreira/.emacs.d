@@ -70,6 +70,13 @@
   :config
   (load-theme 'doom-palenight t))
 
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-init))
+
+(use-package solaire-mode
+  :config
+  (solaire-global-mode))
+
 (setq evil-want-integration t
 	  evil-want-C-i-jump nil
 	  evil-want-C-u-scroll t
