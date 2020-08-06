@@ -90,6 +90,34 @@
   :config
   (evil-mode 1))
 
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode))
+
+(use-package evil-nerd-commenter
+  :config
+  (evilnc-toggle-invert-comment-line-by-line))
+
+(use-package evil-exchange
+  :config
+  (evil-exchange-install))
+
+(use-package evil-args
+  :bind (:map evil-inner-text-objects-map
+		 ("a" . evil-inner-arg)
+		 :map evil-outer-text-objects-map
+		 ("a" . evil-outer-arg)))
+
+(use-package evil-snipe
+  :config
+  (evil-snipe-mode 1)
+  (evil-snipe-override-mode 1)
+  :custom
+  (evil-snipe-scope 'visible)
+  (evil-snipe-repeat-scope 'whole-visible))
+
+(use-package evil-numbers)
+(use-package evil-matchit)
 (use-package evil-anzu)
 
 (load "~/.emacs.d/hotkeys")
