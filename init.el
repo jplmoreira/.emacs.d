@@ -87,6 +87,12 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package whitespace
+  :init
+  (setq whitespace-style '(face empty tabs lines-tail trailing))
+  :config
+  (global-whitespace-mode t))
+
 (setq evil-want-integration t
 	  evil-want-C-i-jump nil
 	  evil-want-C-u-scroll t
