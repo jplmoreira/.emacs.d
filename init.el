@@ -150,15 +150,15 @@
 (use-package ivy
   :init
   (ivy-mode t)
-  :config
-  (setq ivy-wrap t
-		ivy-use-virtual-buffers t
-		ivy-count-format "(%d/%d) ")
   :bind (:map ivy-minibuffer-map
 		 ("RET" . ivy-alt-done)
 		 ("C-<return>" . ivy-immediate-done)
 		 ("C-j" . ivy-next-line)
-		 ("C-k" . ivy-previous-line)))
+		 ("C-k" . ivy-previous-line))
+  :config
+  (setq ivy-wrap t
+		ivy-use-virtual-buffers t
+		ivy-count-format "(%d/%d) "))
 
 (use-package amx
   :after ivy
@@ -169,7 +169,53 @@
 
 (use-package counsel
   :after (ivy amx)
-  :init (counsel-mode t))
+  :init (counsel-mode t)
+  :config
+  (defun prot/counsel-fzf-rg-files (&optional input dir)
+	"Run `fzf' in tandem with `ripgrep' to find files in the
+	 present directory.  If invoked from inside a version-controlled
+	 repository, then the corresponding root is used instead."
+	(interactive)
+	(let* ((process-environment
+			(cons (concat "FZF_DEFAULT_COMMAND=rg -Sn --color never --files --no-follow --hidden")
+				  process-environment))
+		   (vc (vc-root-dir)))
+	  (if dir
+		  (counsel-fzf input dir)
+		(if (eq vc nil)
+			(counsel-fzf input default-directory)
+		  (counsel-fzf input vc)))))
+
+  (defun prot/counsel-fzf-dir (arg)
+	"Specify root directory for `counsel-fzf'."
+	(prot/counsel-fzf-rg-files ivy-text
+							   (read-directory-name
+								(concat (car (split-string counsel-fzf-cmd))
+										" in directory: "))))
+
+  (defun prot/counsel-rg-dir (arg)
+	"Specify root directory for `counsel-rg'."
+	(let ((current-prefix-arg '(4)))
+	  (counsel-rg ivy-text nil "")))
+
+  (ivy-add-actions
+   'counsel-fzf
+   '(("r" prot/counsel-fzf-dir "change root directory")
+	 ("g" prot/counsel-rg-dir "use ripgrep in root directory")))
+
+  (ivy-add-actions
+   'counsel-rg
+   '(("r" prot/counsel-rg-dir "change root directory")
+	 ("z" prot/counsel-fzf-dir "find file with fzf in root directory")))
+
+  (ivy-add-actions
+   'counsel-find-file
+   '(("g" prot/counsel-rg-dir "use ripgrep in root directory")
+	 ("z" prot/counsel-fzf-dir "find file with fzf in root directory"))))
+
+(use-package swiper
+  :after counsel
+  :bind ("C-s" . 'swiper-isearch))
 
 (use-package ivy-posframe
   :after ivy
@@ -190,9 +236,16 @@
 					(let ((width (round (* (frame-width) 0.75))))
 					  (min width (or ivy-posframe-width width)))))))
 
+(use-package prescient
+  :config
+  (setq prescient-history-length 200)
+  (setq prescient-save-file "~/.emacs.d/prescient-items")
+  (setq prescient-filter-method '(literal regexp))
+  (prescient-persist-mode t))
+
 (use-package ivy-prescient
   :after counsel
-  :init
+  :config
   (ivy-prescient-mode))
 
 (use-package all-the-icons-ivy-rich

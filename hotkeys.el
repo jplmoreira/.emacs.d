@@ -26,7 +26,7 @@
   "al" 'evil-forward-arg
   "ah" 'evil-backward-arg
   "aj" 'evil-jump-out-args
- 
+
   ;; Evil nerd commenter
   "ci" 'evilnc-comment-or-uncomment-lines
   "ct" 'evilnc-comment-or-uncomment-to-the-line
@@ -35,4 +35,10 @@
 
   ;; Avy
   "<SPC>" 'avy-goto-char-2
+
+  ;; Ivy
+  "."  'ivy-resume
+  "z"  'prot/counsel-fzf-rg-files
+  "x"  'counsel-rg
+
 )
