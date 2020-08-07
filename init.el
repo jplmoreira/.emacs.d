@@ -160,8 +160,15 @@
 		 ("C-j" . ivy-next-line)
 		 ("C-k" . ivy-previous-line)))
 
-(use-package counsel
+(use-package amx
   :after ivy
+  :custom
+  (amx-backend 'auto)
+  :config
+  (amx-mode t))
+
+(use-package counsel
+  :after (ivy amx)
   :init (counsel-mode t))
 
 (use-package ivy-posframe
@@ -189,7 +196,6 @@
   (ivy-prescient-mode))
 
 (use-package all-the-icons-ivy-rich
-  :after ivy
   :init
   (all-the-icons-ivy-rich-mode t)
   :config
