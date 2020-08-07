@@ -4,9 +4,13 @@
   "e"  'find-file
   "w"  'save-buffer
   "b"  'switch-to-buffer
-  "kb" 'kill-buffer
-  "kt" 'kill-this-buffer
-  "x"  'save-buffers-kill-terminal
+  "t"  'kill-this-buffer
+  "q"  'save-buffers-kill-terminal
+  "o"  'other-window
+  "h"  'windmove-left
+  "j"  'windmove-down
+  "k"  'windmove-up
+  "l"  'windmove-right
 
   ;; Anzu
   "rq" 'anzu-query-replace-regexp
@@ -21,6 +25,7 @@
   ;; Evil args
   "al" 'evil-forward-arg
   "ah" 'evil-backward-arg
+  "aj" 'evil-jump-out-args
  
   ;; Evil nerd commenter
   "ci" 'evilnc-comment-or-uncomment-lines
@@ -28,9 +33,6 @@
   "cl" 'evilnc-comment-operator
   "cc" 'evilnc-copy-and-comment-operator
 
-  ;; Flycheck
-  "fl" 'flycheck-list-errors
-  "fn" 'flycheck-next-error
-  "fp" 'flycheck-previous-error
-
+  ;; Avy
+  "<SPC>" 'avy-goto-char-2
 )

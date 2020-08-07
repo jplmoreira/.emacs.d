@@ -21,6 +21,13 @@
 (setq-default ident-tabs-mode nil)
 (setq-default tab-width 4)
 
+(setq-default display-line-numbers 'relative
+			  display-line-numbers-type 'visual
+              display-line-numbers-current-absolute t
+			  display-line-numbers-width 3
+              display-line-numbers-widen t)
+(add-hook 'text-mode-hook #'display-line-numbers-mode)
+
 (when (eq system-type 'darwin)
   (global-set-key [kp-delete] 'delete-char)
   (setq mac-option-modifier 'alt
@@ -77,6 +84,9 @@
   :config
   (solaire-global-mode))
 
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 (setq evil-want-integration t
 	  evil-want-C-i-jump nil
 	  evil-want-C-u-scroll t
@@ -95,7 +105,7 @@
 (use-package evil
   :after evil-collection
   :config
-  (evil-mode 1))
+  (evil-mode t))
 
 (use-package evil-surround
   :config
@@ -117,8 +127,8 @@
 
 (use-package evil-snipe
   :config
-  (evil-snipe-mode 1)
-  (evil-snipe-override-mode 1)
+  (evil-snipe-mode t)
+  (evil-snipe-override-mode t)
   :custom
   (evil-snipe-scope 'visible)
   (evil-snipe-repeat-scope 'whole-visible))
@@ -126,5 +136,62 @@
 (use-package evil-numbers)
 (use-package evil-matchit)
 (use-package evil-anzu)
+
+(use-package avy
+  :init
+  (setq avy-all-windows t))
+
+(use-package ivy
+  :init
+  (ivy-mode t)
+  :config
+  (setq ivy-wrap t
+		ivy-use-virtual-buffers t
+		ivy-count-format "(%d/%d) ")
+  :bind (:map ivy-minibuffer-map
+		 ("RET" . ivy-alt-done)
+		 ("C-<return>" . ivy-immediate-done)
+		 ("C-j" . ivy-next-line)
+		 ("C-k" . ivy-previous-line)))
+
+(use-package counsel
+  :after ivy
+  :init (counsel-mode t))
+
+(use-package ivy-posframe
+  :after ivy
+  :init
+  (setq ivy-posframe-display-functions-alist
+		'((t . ivy-posframe-display-at-frame-top-center)))
+  :config
+  (ivy-posframe-mode t)
+  (defun ivy-posframe-get-size ()
+	"The default functon used by `ivy-posframe-size-function'."
+	(list
+	 :height ivy-posframe-height
+	 :width ivy-posframe-width
+	 :min-height (or ivy-posframe-min-height
+					 (let ((height (+ ivy-height 1)))
+					   (min height (or ivy-posframe-height height))))
+	 :min-width (or ivy-posframe-min-width
+					(let ((width (round (* (frame-width) 0.75))))
+					  (min width (or ivy-posframe-width width)))))))
+
+(use-package ivy-prescient
+  :after counsel
+  :init
+  (ivy-prescient-mode))
+
+(use-package all-the-icons-ivy-rich
+  :after ivy
+  :init
+  (all-the-icons-ivy-rich-mode t)
+  :config
+  (setq all-the-icons-ivy-rich-icon-size 0.8))
+
+(use-package ivy-rich
+  :after all-the-icons-ivy-rich
+  :init
+  (ivy-rich-mode t))
 
 (load "~/.emacs.d/hotkeys")

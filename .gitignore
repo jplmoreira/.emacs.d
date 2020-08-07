@@ -1,6 +1,7 @@
 auto-save-list
 autosaves
 backups
+recentf
 elpa
 garbage.el
 *.data
