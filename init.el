@@ -9,8 +9,7 @@
 (unless (eq system-type 'darwin)
   (menu-bar-mode -1))
 (scroll-bar-mode -1)
-(electric-pair-mode t)
-(show-paren-mode t)
+(electric-pair-mode t) (show-paren-mode t)
 (set-face-attribute 'show-paren-match t :weight 'extra-bold)
 (global-hl-line-mode t)
 (column-number-mode t)
@@ -20,6 +19,7 @@
 (set-default 'truncate-lines t)
 (setq-default ident-tabs-mode nil)
 (setq-default tab-width 4)
+(setq ident-line-function 'insert-tab)
 
 (setq-default display-line-numbers 'relative
 			  display-line-numbers-type 'visual
@@ -51,9 +51,9 @@
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 						 ("elpa" . "http://tromey.com/elpa/")
-						 ("melpa" . "http://melpa.org/packages/")
 						 ("melpa-stable" . "http://stable.melpa.org/packages/")
 						 ("marmalade" . "http://marmalade-repo.org/packages/")
+						 ("melpa" . "http://melpa.org/packages/")
 						 ("org" . "http://orgmode.org/elpa/")))
 
 ;; Setup package.el
@@ -244,7 +244,7 @@
   (prescient-persist-mode t))
 
 (use-package ivy-prescient
-  :after counsel
+  :after (counsel prescient)
   :config
   (ivy-prescient-mode))
 
@@ -258,5 +258,13 @@
   :after all-the-icons-ivy-rich
   :init
   (ivy-rich-mode t))
+
+
+(setq package-pinned-packages
+	  '((eglot . "melpa-stable")))
+(unless (package-installed-p 'eglot)
+	(package-refresh-contents)
+	(package-install 'eglot))
+(load "~/.emacs.d/languages")
 
 (load "~/.emacs.d/hotkeys")
