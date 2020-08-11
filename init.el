@@ -261,7 +261,7 @@
 
 
 (setq package-pinned-packages
-	  '((eglot . "melpa-stable")))
+	  '((eglot . "gnu")))
 (unless (package-installed-p 'eglot)
 	(package-refresh-contents)
 	(package-install 'eglot))

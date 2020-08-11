@@ -8,5 +8,5 @@
 ;; Rust
 (use-package rust-mode
   :config
-  (add-to-list 'eglot-server-programs '(rust-mode . ("rls")))
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
   (add-hook 'rust-mode-hook 'eglot-ensure))
