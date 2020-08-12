@@ -154,11 +154,13 @@
 		 ("RET" . ivy-alt-done)
 		 ("C-<return>" . ivy-immediate-done)
 		 ("C-j" . ivy-next-line)
-		 ("C-k" . ivy-previous-line))
-  :config
-  (setq ivy-wrap t
-		ivy-use-virtual-buffers t
-		ivy-count-format "(%d/%d) "))
+		 ("C-k" . ivy-previous-line)
+		 ("C-u" . ivy-scroll-down-command)
+		 ("C-d" . ivy-scroll-up-command))
+  :custom
+  (ivy-wrap t)
+  (ivy-use-virtual-buffers t)
+  (ivy-count-format "(%d/%d) "))
 
 (use-package amx
   :after ivy
@@ -219,9 +221,9 @@
 
 (use-package ivy-posframe
   :after ivy
-  :init
-  (setq ivy-posframe-display-functions-alist
-		'((t . ivy-posframe-display-at-frame-top-center)))
+  :custom
+  (ivy-posframe-display-functions-alist
+   '((t . ivy-posframe-display-at-frame-top-center)))
   :config
   (ivy-posframe-mode t)
   (defun ivy-posframe-get-size ()
@@ -237,10 +239,11 @@
 					  (min width (or ivy-posframe-width width)))))))
 
 (use-package prescient
+  :custom
+  (prescient-history-length 200)
+  (prescient-save-file "~/.emacs.d/prescient-items")
+  (prescient-filter-method '(literal regexp))
   :config
-  (setq prescient-history-length 200)
-  (setq prescient-save-file "~/.emacs.d/prescient-items")
-  (setq prescient-filter-method '(literal regexp))
   (prescient-persist-mode t))
 
 (use-package ivy-prescient
@@ -251,8 +254,8 @@
 (use-package all-the-icons-ivy-rich
   :init
   (all-the-icons-ivy-rich-mode t)
-  :config
-  (setq all-the-icons-ivy-rich-icon-size 0.8))
+  :custom
+  (all-the-icons-ivy-rich-icon-size 0.8))
 
 (use-package ivy-rich
   :after all-the-icons-ivy-rich
@@ -275,12 +278,11 @@
   (company-tooltip-align-annotations t)
   (company-tooltip-limit 10)
   (company-require-match 'never)
-  (company-show-numbers t))
-
-(use-package company-posframe
-	   :config
-	   (company-posframe-mode)
-	   :custom
-	   (company-posframe-quickhelp-delay nil))
+  (company-show-numbers t)
+  :bind (:map company-active-map
+		 ("C-j" . company-select-next)
+		 ("C-k" . company-select-previous)
+		 ("<tab>" . company-complete-common)
+		 ("RET" . company-complete-selection)))
 
 (load "~/.emacs.d/hotkeys")
