@@ -12,12 +12,6 @@
   "k"  'windmove-up
   "l"  'windmove-right
 
-  ;; Anzu
-  "rq" 'anzu-query-replace-regexp
-  "rs" 'anzu-isearch-query-replace-regexp
-  "rc" 'anzu-query-replace-at-cursor
-  "rt" 'anzu-query-replace-at-cursor-thing
-
   ;; Evil numbers
   "+"  'evil-numbers/inc-at-pt
   "-"  'evil-numbers/dec-at-pt
@@ -33,12 +27,31 @@
   "cl" 'evilnc-comment-operator
   "cc" 'evilnc-copy-and-comment-operator
 
+  ;; Anzu
+  "rq" 'anzu-query-replace-regexp
+  "rs" 'anzu-isearch-query-replace-regexp
+  "rc" 'anzu-query-replace-at-cursor
+  "rt" 'anzu-query-replace-at-cursor-thing
+
   ;; Avy
-  "v" 'avy-goto-char-2
+  "v"  'avy-goto-char-2
 
   ;; Ivy
   ";"  'ivy-resume
   "z"  'prot/counsel-fzf-rg-files
   "x"  'counsel-rg
+
+  ;; eglot
+  "sc" 'eglot-reconnect
+  "ss" 'eglot-shutdown
+  "sr" 'eglot-rename
+  "sf" 'eglot-format
+  "sa" 'eglot-code-actions
+  "sh" 'eglot-help-at-point
+  "sd" 'eglot-find-declaration
+  "si" 'eglot-find-implementation
+  "st" 'eglot-find-typeDefinition
+  "se" 'xref-find-references
+  "sp" 'xref-apropos
 
 )
