@@ -34,10 +34,10 @@
   "cc" 'evilnc-copy-and-comment-operator
 
   ;; Avy
-  "<SPC>" 'avy-goto-char-2
+  "v" 'avy-goto-char-2
 
   ;; Ivy
-  "."  'ivy-resume
+  ";"  'ivy-resume
   "z"  'prot/counsel-fzf-rg-files
   "x"  'counsel-rg
 

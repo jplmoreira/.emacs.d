@@ -259,7 +259,6 @@
   :init
   (ivy-rich-mode t))
 
-
 (setq package-pinned-packages
 	  '((eglot . "gnu")))
 (unless (package-installed-p 'eglot)
