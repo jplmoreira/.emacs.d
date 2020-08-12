@@ -266,4 +266,21 @@
 	(package-install 'eglot))
 (load "~/.emacs.d/languages")
 
+(use-package company
+  :hook
+  (prog-mode . company-mode)
+  :custom
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 1)
+  (company-tooltip-align-annotations t)
+  (company-tooltip-limit 10)
+  (company-require-match 'never)
+  (company-show-numbers t))
+
+(use-package company-posframe
+	   :config
+	   (company-posframe-mode)
+	   :custom
+	   (company-posframe-quickhelp-delay nil))
+
 (load "~/.emacs.d/hotkeys")
