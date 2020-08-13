@@ -4,6 +4,7 @@ amx-items
 autosaves
 backups
 recentf
+.cache
 elpa
 garbage.el
 *.data

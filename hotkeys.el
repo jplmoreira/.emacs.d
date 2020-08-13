@@ -1,16 +1,22 @@
+(load "~/.emacs.d/move-border.el")
+
 (evil-leader/set-key
 
   ;; General
   "e"  'find-file
   "w"  'save-buffer
   "b"  'switch-to-buffer
-  "t"  'kill-this-buffer
+  "d"  'kill-this-buffer
   "q"  'save-buffers-kill-terminal
   "o"  'other-window
   "h"  'windmove-left
   "j"  'windmove-down
   "k"  'windmove-up
   "l"  'windmove-right
+  "H"  'move-border-left
+  "J"  'move-border-down
+  "K"  'move-border-up
+  "L"  'move-border-right
 
   ;; Evil numbers
   "+"  'evil-numbers/inc-at-pt
@@ -53,5 +59,12 @@
   "st" 'eglot-find-typeDefinition
   "se" 'xref-find-references
   "sp" 'xref-apropos
+  "sj" 'flymake-goto-next-error
+  "sk" 'flymake-goto-prev-error
+  "sg" 'flymake-show-diagnostics-buffer
+
+  ;; Treemacs
+  "<SPC>" 'treemacs-select-window
+  "to"    'treemacs-delete-other-windows
 
 )

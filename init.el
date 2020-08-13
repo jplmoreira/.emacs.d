@@ -216,6 +216,7 @@
 	 ("z" prot/counsel-fzf-dir "find file with fzf in root directory"))))
 
 (use-package swiper
+  :defer t
   :after counsel
   :bind ("C-s" . 'swiper-isearch))
 
@@ -270,6 +271,7 @@
 (load "~/.emacs.d/languages")
 
 (use-package company
+  :defer t
   :hook
   (prog-mode . company-mode)
   :custom
@@ -286,9 +288,24 @@
 		 ("RET" . company-complete-selection)))
 
 (use-package ivy-xref
+  :defer t
   :init
   (when (>= emacs-major-version 27)
     (setq xref-show-definitions-function #'ivy-xref-show-defs))
   (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 
 (load "~/.emacs.d/hotkeys")
+
+(use-package treemacs
+  :defer t
+  :custom
+  (treemacs-is-never-other-window t)
+  (treemacs-collapse-dirs 10))
+
+(use-package treemacs-evil
+  :after treemacs evil)
+
+(use-package treemacs-all-the-icons
+  :after treemacs
+  :config
+  (treemacs-load-theme "all-the-icons"))
