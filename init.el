@@ -309,3 +309,9 @@
   :after treemacs
   :config
   (treemacs-load-theme "all-the-icons"))
+
+(use-package ranger
+  :custom
+  (ranger-show-hidden t)
+  :config
+  (ranger-override-dired-mode t))

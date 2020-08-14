@@ -67,4 +67,7 @@
   "<SPC>" 'treemacs-select-window
   "to"    'treemacs-delete-other-windows
 
+  ;; Ranger
+  "."  'ranger
+
 )
