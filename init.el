@@ -313,5 +313,7 @@
 (use-package ranger
   :custom
   (ranger-show-hidden t)
+  (ranger-cleanup-on-disable t)
+  (ranger-dont-show-binary t)
   :config
   (ranger-override-dired-mode t))
