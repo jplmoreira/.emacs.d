@@ -70,4 +70,7 @@
   ;; Ranger
   "."  'ranger
 
+  ;; Magit
+  "g"  'magit-status
+
 )

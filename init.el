@@ -78,14 +78,16 @@
   (load-theme 'doom-palenight t))
 
 (use-package doom-modeline
-  :hook (after-init . doom-modeline-init))
+  :hook
+  (after-init . doom-modeline-init))
 
 (use-package solaire-mode
   :config
   (solaire-global-mode))
 
 (use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
 
 (use-package whitespace
   :init
@@ -294,8 +296,6 @@
     (setq xref-show-definitions-function #'ivy-xref-show-defs))
   (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 
-(load "~/.emacs.d/hotkeys")
-
 (use-package treemacs
   :defer t
   :custom
@@ -317,3 +317,18 @@
   (ranger-dont-show-binary t)
   :config
   (ranger-override-dired-mode t))
+
+(use-package evil-magit
+  :defer t
+  :init
+  (evil-magit-init)
+  :hook
+  (magit-mode . turn-off-evil-snipe-override-mode)
+  :custom
+  (magit-display-buffer-function
+   #'magit-display-buffer-fullframe-status-v1))
+
+(use-package treemacs-magit
+  :after (treemacs evil-magit))
+
+(load "~/.emacs.d/hotkeys")

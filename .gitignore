@@ -2,8 +2,10 @@ prescient-items
 auto-save-list
 amx-items
 autosaves
+transient
 backups
 recentf
+server
 .cache
 elpa
 garbage.el
