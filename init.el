@@ -101,7 +101,7 @@
 	  evil-want-keybinding nil)
 
 (use-package evil-leader
-  :init
+  :config
   (global-evil-leader-mode)
   (evil-leader/set-leader "<SPC>"))
 
@@ -143,13 +143,15 @@
 
 (use-package evil-numbers)
 (use-package evil-matchit)
-(use-package evil-anzu)
+(use-package evil-anzu
+  :defer t)
 
 (use-package avy
   :init
   (setq avy-all-windows t))
 
 (use-package ivy
+  :defer t
   :init
   (ivy-mode t)
   :bind (:map ivy-minibuffer-map
@@ -265,11 +267,6 @@
   :init
   (ivy-rich-mode t))
 
-(setq package-pinned-packages
-	  '((eglot . "gnu")))
-(unless (package-installed-p 'eglot)
-	(package-refresh-contents)
-	(package-install 'eglot))
 (load "~/.emacs.d/languages")
 
 (use-package company
@@ -300,7 +297,10 @@
   :defer t
   :custom
   (treemacs-is-never-other-window t)
-  (treemacs-collapse-dirs 10))
+  (treemacs-collapse-dirs 10)
+  :config
+  (treemacs-git-mode 'simple)
+  (treemacs-filewatch-mode t))
 
 (use-package treemacs-evil
   :after treemacs evil)
@@ -318,17 +318,26 @@
   :config
   (ranger-override-dired-mode t))
 
-(use-package evil-magit
+(use-package magit
   :defer t
-  :init
-  (evil-magit-init)
-  :hook
-  (magit-mode . turn-off-evil-snipe-override-mode)
   :custom
   (magit-display-buffer-function
    #'magit-display-buffer-fullframe-status-v1))
 
+(use-package evil-magit
+  :after magit
+  :init
+  (evil-magit-init)
+  :hook
+  (magit-mode . turn-off-evil-snipe-override-mode))
+
 (use-package treemacs-magit
-  :after (treemacs evil-magit))
+  :after magit)
+
+(use-package esup
+  :pin melpa
+  :custom
+  (esup-depth 0)
+  :commands (esup))
 
 (load "~/.emacs.d/hotkeys")

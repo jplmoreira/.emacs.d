@@ -58,7 +58,7 @@
   "si" 'eglot-find-implementation
   "st" 'eglot-find-typeDefinition
   "se" 'xref-find-references
-  "sp" 'xref-apropos
+  "sp" 'xref-find-apropos
   "sj" 'flymake-goto-next-error
   "sk" 'flymake-goto-prev-error
   "sg" 'flymake-show-diagnostics-buffer
