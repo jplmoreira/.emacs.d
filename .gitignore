@@ -5,6 +5,7 @@ autosaves
 transient
 backups
 recentf
+eshell
 server
 .cache
 elpa

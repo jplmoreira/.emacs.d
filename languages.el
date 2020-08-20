@@ -19,7 +19,16 @@
   :init
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
+;; YAML
 (use-package yaml-mode
   :defer t
   :init
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
+;; Go
+(use-package go-mode
+  :defer t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+  (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
+  (add-hook 'go-mode-hook 'eglot-ensure))
