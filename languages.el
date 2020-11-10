@@ -32,3 +32,12 @@
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
   (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
   (add-hook 'go-mode-hook 'eglot-ensure))
+
+;; Typescript
+(use-package typescript-mode
+  :defer t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+  (add-to-list 'eglot-server-programs
+			   '(typescript-mode . ("typescript-language-server")))
+  (add-hook 'typescript-mode-hook 'eglot-ensure))
