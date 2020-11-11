@@ -18,7 +18,8 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (set-default 'truncate-lines t)
 (setq-default ident-tabs-mode nil)
-(setq-default tab-width 4)
+(setq-default tab-width 2)
+(setq-default standard-indent 2)
 (setq ident-line-function 'insert-tab)
 
 (setq-default display-line-numbers 'relative

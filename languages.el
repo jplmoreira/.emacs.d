@@ -37,7 +37,8 @@
 (use-package typescript-mode
   :defer t
   :config
+	(setq-default typescript-indent-level 2)
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
   (add-to-list 'eglot-server-programs
-			   '(typescript-mode . ("typescript-language-server")))
+			   '(typescript-mode . ("typescript-language-server" "--stdio")))
   (add-hook 'typescript-mode-hook 'eglot-ensure))
