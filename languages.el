@@ -4,7 +4,10 @@
   ;; C/C++
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) . ("clangd")))
   (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure))
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+	(add-to-list 'eglot-server-programs
+							 '(sh-mode . ("bash-language-server" "start")))
+	(add-hook 'sh-mode-hook 'eglot-ensure))
 
 ;; Rust
 (use-package rust-mode
