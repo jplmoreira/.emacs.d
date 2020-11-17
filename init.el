@@ -2,7 +2,7 @@
       user-mail-address "jplmoreira@tecnico.pt")
 
 (setq gc-cons-threshold 50000000
-	  large-file-warning-threshold 100000000)
+      large-file-warning-threshold 100000000)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (tool-bar-mode -1)
@@ -17,26 +17,25 @@
 (setq inhibit-startup-screen t)
 (fset 'yes-or-no-p 'y-or-n-p)
 (set-default 'truncate-lines t)
-(setq-default ident-tabs-mode nil)
-(setq-default tab-width 2)
 (setq-default standard-indent 2)
+(setq-default indent-tabs-mode nil)
 (setq ident-line-function 'insert-tab)
 
 (setq-default display-line-numbers 'relative
-			  display-line-numbers-type 'visual
+              display-line-numbers-type 'visual
               display-line-numbers-current-absolute t
-			  display-line-numbers-width 3
+              display-line-numbers-width 3
               display-line-numbers-widen t)
 (add-hook 'text-mode-hook #'display-line-numbers-mode)
 
 (when (eq system-type 'darwin)
   (global-set-key [kp-delete] 'delete-char)
   (setq mac-option-modifier 'alt
-	mac-command-modifier 'meta
-	mac-right-command-modifier nil
-	mac-right-option-modifier nil
-	select-enable-clipboard t
-	ns-use-native-fullscreen t))
+        mac-command-modifier 'meta
+        mac-right-command-modifier nil
+        mac-right-option-modifier nil
+        select-enable-clipboard t
+        ns-use-native-fullscreen t))
 
 (setq custom-file "~/.emacs.d/garbage.el")
 
@@ -46,16 +45,16 @@
 (make-directory "~/.emacs.d/backups/" t)
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups/")))
 (setq create-lockfiles nil
-	  backup-by-copying t
-	  version-control t
-	  delete-old-versions t)
+      backup-by-copying t
+      version-control t
+      delete-old-versions t)
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-						 ("elpa" . "http://tromey.com/elpa/")
-						 ("melpa-stable" . "http://stable.melpa.org/packages/")
-						 ("marmalade" . "http://marmalade-repo.org/packages/")
-						 ("melpa" . "http://melpa.org/packages/")
-						 ("org" . "http://orgmode.org/elpa/")))
+                         ("elpa" . "http://tromey.com/elpa/")
+                         ("melpa-stable" . "http://stable.melpa.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")))
 
 ;; Setup package.el
 (require 'package)
@@ -91,15 +90,22 @@
   (prog-mode . rainbow-delimiters-mode))
 
 (use-package whitespace
-  :init
-  (setq whitespace-style '(face empty tabs lines-tail trailing))
+  :defer t
   :config
-  (global-whitespace-mode t))
+  (setq whitespace-style '(face empty lines-tail trailing))
+  (setq whitespace-line-column 100)
+  :hook
+  (prog-mode . whitespace-mode))
+
+(use-package highlight-leading-spaces
+  :defer t
+  :hook
+  (prog-mode . highlight-leading-spaces-mode))
 
 (setq evil-want-integration t
-	  evil-want-C-i-jump nil
-	  evil-want-C-u-scroll t
-	  evil-want-keybinding nil)
+      evil-want-C-i-jump nil
+      evil-want-C-u-scroll t
+      evil-want-keybinding nil)
 
 (use-package evil-leader
   :config
@@ -130,9 +136,9 @@
 
 (use-package evil-args
   :bind (:map evil-inner-text-objects-map
-		 ("a" . evil-inner-arg)
-		 :map evil-outer-text-objects-map
-		 ("a" . evil-outer-arg)))
+              ("a" . evil-inner-arg)
+              :map evil-outer-text-objects-map
+              ("a" . evil-outer-arg)))
 
 (use-package evil-snipe
   :config
@@ -156,12 +162,12 @@
   :init
   (ivy-mode t)
   :bind (:map ivy-minibuffer-map
-		 ("RET" . ivy-alt-done)
-		 ("C-<return>" . ivy-immediate-done)
-		 ("C-j" . ivy-next-line)
-		 ("C-k" . ivy-previous-line)
-		 ("C-u" . ivy-scroll-down-command)
-		 ("C-d" . ivy-scroll-up-command))
+              ("RET" . ivy-alt-done)
+              ("C-<return>" . ivy-immediate-done)
+              ("C-j" . ivy-next-line)
+              ("C-k" . ivy-previous-line)
+              ("C-u" . ivy-scroll-down-command)
+              ("C-d" . ivy-scroll-up-command))
   :custom
   (ivy-wrap t)
   (ivy-use-virtual-buffers t)
@@ -179,46 +185,46 @@
   :init (counsel-mode t)
   :config
   (defun prot/counsel-fzf-rg-files (&optional input dir)
-	"Run `fzf' in tandem with `ripgrep' to find files in the
-	 present directory.  If invoked from inside a version-controlled
-	 repository, then the corresponding root is used instead."
-	(interactive)
-	(let* ((process-environment
-			(cons (concat "FZF_DEFAULT_COMMAND=rg -Sn --color never --files --no-follow --hidden")
-				  process-environment))
-		   (vc (vc-root-dir)))
-	  (if dir
-		  (counsel-fzf input dir)
-		(if (eq vc nil)
-			(counsel-fzf input default-directory)
-		  (counsel-fzf input vc)))))
+    "Run `fzf' in tandem with `ripgrep' to find files in the
+         present directory.  If invoked from inside a version-controlled
+         repository, then the corresponding root is used instead."
+    (interactive)
+    (let* ((process-environment
+            (cons (concat "FZF_DEFAULT_COMMAND=rg -Sn --color never --files --no-follow --hidden")
+                  process-environment))
+           (vc (vc-root-dir)))
+      (if dir
+          (counsel-fzf input dir)
+        (if (eq vc nil)
+            (counsel-fzf input default-directory)
+          (counsel-fzf input vc)))))
 
   (defun prot/counsel-fzf-dir (arg)
-	"Specify root directory for `counsel-fzf'."
-	(prot/counsel-fzf-rg-files ivy-text
-							   (read-directory-name
-								(concat (car (split-string counsel-fzf-cmd))
-										" in directory: "))))
+    "Specify root directory for `counsel-fzf'."
+    (prot/counsel-fzf-rg-files ivy-text
+                               (read-directory-name
+                                (concat (car (split-string counsel-fzf-cmd))
+                                        " in directory: "))))
 
   (defun prot/counsel-rg-dir (arg)
-	"Specify root directory for `counsel-rg'."
-	(let ((current-prefix-arg '(4)))
-	  (counsel-rg ivy-text nil "")))
+    "Specify root directory for `counsel-rg'."
+    (let ((current-prefix-arg '(4)))
+      (counsel-rg ivy-text nil "")))
 
   (ivy-add-actions
    'counsel-fzf
    '(("r" prot/counsel-fzf-dir "change root directory")
-	 ("g" prot/counsel-rg-dir "use ripgrep in root directory")))
+     ("g" prot/counsel-rg-dir "use ripgrep in root directory")))
 
   (ivy-add-actions
    'counsel-rg
    '(("r" prot/counsel-rg-dir "change root directory")
-	 ("z" prot/counsel-fzf-dir "find file with fzf in root directory")))
+     ("z" prot/counsel-fzf-dir "find file with fzf in root directory")))
 
   (ivy-add-actions
    'counsel-find-file
    '(("g" prot/counsel-rg-dir "use ripgrep in root directory")
-	 ("z" prot/counsel-fzf-dir "find file with fzf in root directory"))))
+     ("z" prot/counsel-fzf-dir "find file with fzf in root directory"))))
 
 (use-package swiper
   :defer t
@@ -233,16 +239,16 @@
   :config
   (ivy-posframe-mode t)
   (defun ivy-posframe-get-size ()
-	"The default functon used by `ivy-posframe-size-function'."
-	(list
-	 :height ivy-posframe-height
-	 :width ivy-posframe-width
-	 :min-height (or ivy-posframe-min-height
-					 (let ((height (+ ivy-height 1)))
-					   (min height (or ivy-posframe-height height))))
-	 :min-width (or ivy-posframe-min-width
-					(let ((width (round (* (frame-width) 0.75))))
-					  (min width (or ivy-posframe-width width)))))))
+    "The default functon used by `ivy-posframe-size-function'."
+    (list
+     :height ivy-posframe-height
+     :width ivy-posframe-width
+     :min-height (or ivy-posframe-min-height
+                     (let ((height (+ ivy-height 1)))
+                       (min height (or ivy-posframe-height height))))
+     :min-width (or ivy-posframe-min-width
+                    (let ((width (round (* (frame-width) 0.75))))
+                      (min width (or ivy-posframe-width width)))))))
 
 (use-package prescient
   :custom
@@ -282,10 +288,28 @@
   (company-require-match 'never)
   (company-show-numbers t)
   :bind (:map company-active-map
-		 ("C-j" . company-select-next)
-		 ("C-k" . company-select-previous)
-		 ("<tab>" . company-complete-common)
-		 ("RET" . company-complete-selection)))
+              ("C-j" . company-select-next)
+              ("C-k" . company-select-previous)
+              ("<tab>" . company-complete-common)
+              ("RET" . company-complete-selection))
+  :config
+  (defvar my-prev-whitespace-mode nil)
+  (make-variable-buffer-local 'my-prev-whitespace-mode)
+  (defun pre-popup-draw ()
+    "Turn off whitespace mode before showing company complete tooltip"
+    (if whitespace-mode
+        (progn
+          (setq my-prev-whitespace-mode t)
+          (whitespace-mode -1)
+          (setq my-prev-whitespace-mode t))))
+  (defun post-popup-draw ()
+    "Restore previous whitespace mode after showing company tooltip"
+    (if my-prev-whitespace-mode
+        (progn
+          (whitespace-mode 1)
+          (setq my-prev-whitespace-mode nil))))
+  (advice-add 'company-pseudo-tooltip-unhide :before #'pre-popup-draw)
+  (advice-add 'company-pseudo-tooltip-hide :after #'post-popup-draw))
 
 (use-package ivy-xref
   :defer t
