@@ -8,7 +8,9 @@
   (add-to-list 'eglot-server-programs
                '(sh-mode . ("bash-language-server" "start")))
   (setq-default sh-indentation 2)
-  (add-hook 'sh-mode-hook 'eglot-ensure))
+  (add-hook 'sh-mode-hook 'eglot-ensure)
+  (add-to-list 'eglot-server-programs '(pythom-mode . ("pyls")))
+  (add-hook 'python-mode-hook 'eglot-ensure))
 
 ;; Rust
 (use-package rust-mode
