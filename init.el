@@ -9,6 +9,7 @@
 (unless (eq system-type 'darwin)
   (menu-bar-mode -1))
 (scroll-bar-mode -1)
+(global-auto-revert-mode 1)
 (electric-pair-mode t) (show-paren-mode t)
 (set-face-attribute 'show-paren-match t :weight 'extra-bold)
 (global-hl-line-mode t)
