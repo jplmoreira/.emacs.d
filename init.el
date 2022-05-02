@@ -349,13 +349,6 @@
   (magit-display-buffer-function
    #'magit-display-buffer-fullframe-status-v1))
 
-(use-package evil-magit
-  :after magit
-  :init
-  (evil-magit-init)
-  :hook
-  (magit-mode . turn-off-evil-snipe-override-mode))
-
 (use-package treemacs-magit
   :after magit)
 

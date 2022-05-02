@@ -9,7 +9,7 @@
                '(sh-mode . ("bash-language-server" "start")))
   (setq-default sh-indentation 2)
   (add-hook 'sh-mode-hook 'eglot-ensure)
-  (add-to-list 'eglot-server-programs '(pythom-mode . ("pyls")))
+  (add-to-list 'eglot-server-programs '(python-mode . ("pyls")))
   (add-hook 'python-mode-hook 'eglot-ensure))
 
 ;; Rust
@@ -44,7 +44,8 @@
   :defer t
   :config
   (setq-default typescript-indent-level 2)
-  (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+  (add-to-list 'auto-mode-alist '("\\.ts?x\\'" . typescript-mode))
+  (add-to-list 'auto-mode-alist '("\\.js?x\\'" . typescript-mode))
   (add-to-list 'eglot-server-programs
                '(typescript-mode . ("typescript-language-server" "--stdio")))
   (add-hook 'typescript-mode-hook 'eglot-ensure))
