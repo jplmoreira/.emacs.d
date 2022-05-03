@@ -49,4 +49,3 @@
   (add-to-list 'eglot-server-programs
                '(typescript-mode . ("typescript-language-server" "--stdio")))
   (add-hook 'typescript-mode-hook 'eglot-ensure))
-
