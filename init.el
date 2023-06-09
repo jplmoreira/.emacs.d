@@ -51,8 +51,6 @@
       delete-old-versions t)
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("elpa" . "http://tromey.com/elpa/")
-                         ("melpa-stable" . "http://stable.melpa.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")))
 
@@ -69,8 +67,12 @@
 (setq use-package-always-ensure t)
 (setq use-package-verbose t)
 
-(when (member "mononoki" (font-family-list))
-  (set-frame-font "mononoki" nil t)
+(when (member "Iosevka" (font-family-list))
+  (set-frame-font "Iosevka" nil t)
+  (set-face-attribute 'default nil :height 130))
+
+(when (member "Cascadia Code PL" (font-family-list))
+  (set-frame-font "Cascadia Code PL" nil t)
   (set-face-attribute 'default nil :height 130))
 
 (use-package doom-themes
@@ -79,7 +81,7 @@
 
 (use-package doom-modeline
   :hook
-  (after-init . doom-modeline-init))
+  (after-init . doom-modeline-mode))
 
 (use-package solaire-mode
   :config
@@ -182,49 +184,7 @@
 
 (use-package counsel
   :after (ivy amx)
-  :init (counsel-mode t)
-  :config
-  (defun prot/counsel-fzf-rg-files (&optional input dir)
-    "Run `fzf' in tandem with `ripgrep' to find files in the
-         present directory.  If invoked from inside a version-controlled
-         repository, then the corresponding root is used instead."
-    (interactive)
-    (let* ((process-environment
-            (cons (concat "FZF_DEFAULT_COMMAND=rg -Sn --color never --files --no-follow --hidden")
-                  process-environment))
-           (vc (vc-root-dir)))
-      (if dir
-          (counsel-fzf input dir)
-        (if (eq vc nil)
-            (counsel-fzf input default-directory)
-          (counsel-fzf input vc)))))
-
-  (defun prot/counsel-fzf-dir (arg)
-    "Specify root directory for `counsel-fzf'."
-    (prot/counsel-fzf-rg-files ivy-text
-                               (read-directory-name
-                                (concat (car (split-string counsel-fzf-cmd))
-                                        " in directory: "))))
-
-  (defun prot/counsel-rg-dir (arg)
-    "Specify root directory for `counsel-rg'."
-    (let ((current-prefix-arg '(4)))
-      (counsel-rg ivy-text nil "")))
-
-  (ivy-add-actions
-   'counsel-fzf
-   '(("r" prot/counsel-fzf-dir "change root directory")
-     ("g" prot/counsel-rg-dir "use ripgrep in root directory")))
-
-  (ivy-add-actions
-   'counsel-rg
-   '(("r" prot/counsel-rg-dir "change root directory")
-     ("z" prot/counsel-fzf-dir "find file with fzf in root directory")))
-
-  (ivy-add-actions
-   'counsel-find-file
-   '(("g" prot/counsel-rg-dir "use ripgrep in root directory")
-     ("z" prot/counsel-fzf-dir "find file with fzf in root directory"))))
+  :init (counsel-mode t))
 
 (use-package swiper
   :defer t

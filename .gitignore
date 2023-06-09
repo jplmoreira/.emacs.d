@@ -11,3 +11,5 @@ server
 elpa
 garbage.el
 *.data
+bookmarks
+eln-cache

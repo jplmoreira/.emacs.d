@@ -9,7 +9,7 @@
                '(sh-mode . ("bash-language-server" "start")))
   (setq-default sh-indentation 2)
   (add-hook 'sh-mode-hook 'eglot-ensure)
-  (add-to-list 'eglot-server-programs '(python-mode . ("pyls")))
+  (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
   (add-hook 'python-mode-hook 'eglot-ensure))
 
 ;; Rust
