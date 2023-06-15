@@ -44,7 +44,6 @@
 
   ;; Ivy
   ";"  'ivy-resume
-  "z"  'prot/counsel-fzf-rg-files
   "x"  'counsel-rg
 
   ;; eglot

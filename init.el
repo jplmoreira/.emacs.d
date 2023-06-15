@@ -11,7 +11,6 @@
 (scroll-bar-mode -1)
 (global-auto-revert-mode 1)
 (electric-pair-mode t) (show-paren-mode t)
-(set-face-attribute 'show-paren-match t :weight 'extra-bold)
 (global-hl-line-mode t)
 (column-number-mode t)
 (size-indication-mode t)
@@ -54,6 +53,19 @@
                          ("melpa" . "http://melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")))
 
+;; Set exec-path to match shell PATH - https://www.emacswiki.org/emacs/ExecPath
+(defun set-exec-path-from-shell-PATH ()
+
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string
+			  "[ \t\n]*$" "" (shell-command-to-string
+					  "$SHELL --login -c 'echo $PATH'"
+						    ))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(set-exec-path-from-shell-PATH)
+
 ;; Setup package.el
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -67,17 +79,27 @@
 (setq use-package-always-ensure t)
 (setq use-package-verbose t)
 
-(when (member "Iosevka" (font-family-list))
-  (set-frame-font "Iosevka" nil t)
-  (set-face-attribute 'default nil :height 130))
+(cond
 
-(when (member "Cascadia Code PL" (font-family-list))
-  (set-frame-font "Cascadia Code PL" nil t)
-  (set-face-attribute 'default nil :height 130))
+ ((member "mononoki" (font-family-list))
+  (set-frame-font "mononoki 12" nil t))
+
+ ((member "iosevka" (font-family-list))
+  (set-frame-font "iosevka 11" nil t))
+
+ ((member "Cascadia Code PL" (font-family-list))
+  (set-frame-font "Cascadia Code PL 11" nil t))
+ )
+
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-palenight t))
+  (load-theme 'doom-palenight t)
+  (set-face-attribute 'show-paren-match nil
+                      :weight 'extra-bold
+                      :foreground (face-background 'default)
+                      :background (face-foreground 'warning)))
+
 
 (use-package doom-modeline
   :hook
