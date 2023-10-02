@@ -91,6 +91,11 @@
   (set-frame-font "Cascadia Code PL 11" nil t))
  )
 
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package doom-themes
   :config
@@ -99,7 +104,6 @@
                       :weight 'extra-bold
                       :foreground (face-background 'default)
                       :background (face-foreground 'warning)))
-
 
 (use-package doom-modeline
   :hook
