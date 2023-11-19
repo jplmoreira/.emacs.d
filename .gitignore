@@ -1,15 +1,21 @@
-prescient-items
-auto-save-list
-amx-items
-autosaves
-transient
-backups
-recentf
-eshell
-server
-.cache
-elpa
-garbage.el
-*.data
-bookmarks
-eln-cache
+# Personal local files.
+secret/
+local.el
+early-local.el
+custom.el
+
+# straight.el
+straight/build-*
+straight/repos/
+
+# Byte-compiled files.
+*.elc
+eln-cache/
+
+# no-littering.el
+var/
+!var/mc-list.el
+etc/yasnippet/snippets/*/.yas-compiled-snippets.el
+
+# Tree-sitter grammars.
+tree-sitter/

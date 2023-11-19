@@ -1,347 +1,43 @@
-(setq user-full-name "João Moreira"
-      user-mail-address "jplmoreira@tecnico.pt")
+;;; -*- lexical-binding: t; -*-
 
-(setq gc-cons-threshold 50000000
-      large-file-warning-threshold 100000000)
+;; Load early-init.el regardless of the way Emacs was started.
+(require 'early-init (expand-file-name "early-init" user-emacs-directory))
 
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-(tool-bar-mode -1)
-(unless (eq system-type 'darwin)
-  (menu-bar-mode -1))
-(scroll-bar-mode -1)
-(global-auto-revert-mode 1)
-(electric-pair-mode t) (show-paren-mode t)
-(global-hl-line-mode t)
-(column-number-mode t)
-(size-indication-mode t)
-(setq inhibit-startup-screen t)
-(fset 'yes-or-no-p 'y-or-n-p)
-(set-default 'truncate-lines t)
-(setq-default standard-indent 2)
-(setq-default indent-tabs-mode nil)
-(setq ident-line-function 'insert-tab)
-
-(setq-default display-line-numbers 'relative
-              display-line-numbers-type 'visual
-              display-line-numbers-current-absolute t
-              display-line-numbers-width 3
-              display-line-numbers-widen t)
-(add-hook 'text-mode-hook #'display-line-numbers-mode)
-
-(when (eq system-type 'darwin)
-  (global-set-key [kp-delete] 'delete-char)
-  (setq mac-option-modifier 'alt
-        mac-command-modifier 'meta
-        mac-right-command-modifier nil
-        mac-right-option-modifier nil
-        select-enable-clipboard t
-        ns-use-native-fullscreen t))
-
-(setq custom-file "~/.emacs.d/garbage.el")
-
-(make-directory "~/.emacs.d/autosaves/" t)
-(setq auto-save-file-name-transforms
-      `(("\\(?:[^/]*/\\)*\\(.*\\)" "~/.emacs.d/autosaves/\\1" t)))
-(make-directory "~/.emacs.d/backups/" t)
-(setq backup-directory-alist `(("." . "~/.emacs.d/backups/")))
-(setq create-lockfiles nil
-      backup-by-copying t
-      version-control t
-      delete-old-versions t)
-
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")))
-
-;; Set exec-path to match shell PATH - https://www.emacswiki.org/emacs/ExecPath
-(defun set-exec-path-from-shell-PATH ()
-
-  (interactive)
-  (let ((path-from-shell (replace-regexp-in-string
-			  "[ \t\n]*$" "" (shell-command-to-string
-					  "$SHELL --login -c 'echo $PATH'"
-						    ))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-
-(set-exec-path-from-shell-PATH)
-
-;; Setup package.el
-(require 'package)
-(setq package-enable-at-startup nil)
-(package-initialize)
-
-;; Bootstrap `use-package'
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
-(setq use-package-verbose t)
-
-(cond
-
- ((member "mononoki" (font-family-list))
-  (set-frame-font "mononoki 12" nil t))
-
- ((member "iosevka" (font-family-list))
-  (set-frame-font "iosevka 11" nil t))
-
- ((member "Cascadia Code PL" (font-family-list))
-  (set-frame-font "Cascadia Code PL 11" nil t))
- )
-
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns x))
-  :ensure t
+;; Load no-littering.el before anything else to keep ~/.emacs.d/ tidy.
+(use-package no-littering
+  :straight t
+  :demand t
   :config
-  (exec-path-from-shell-initialize))
+  (no-littering-theme-backups))
 
-(use-package doom-themes
-  :config
-  (load-theme 'doom-palenight t)
-  (set-face-attribute 'show-paren-match nil
-                      :weight 'extra-bold
-                      :foreground (face-background 'default)
-                      :background (face-foreground 'warning)))
+;; Expose the packages integrated into the config repository.
+(add-to-list 'load-path (expand-file-name "vendor/" user-emacs-directory))
 
-(use-package doom-modeline
-  :hook
-  (after-init . doom-modeline-mode))
+;; Load the machine-local custom.el, versioned separately.
+;; Possibly absent.
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file 'noerror)
 
-(use-package solaire-mode
-  :config
-  (solaire-global-mode))
 
-(use-package rainbow-delimiters
-  :hook
-  (prog-mode . rainbow-delimiters-mode))
+;; Load the config management and maintenance helper library.
+(require 'config-lib (expand-file-name "config-lib" user-emacs-directory))
 
-(use-package whitespace
-  :defer t
-  :config
-  (setq whitespace-style '(face empty lines-tail trailing))
-  (setq whitespace-line-column 100)
-  :hook
-  (prog-mode . whitespace-mode))
+;; Load all the config parts.
+(load-numbered-parts (expand-file-name "lisp/" user-emacs-directory))
 
-(use-package highlight-leading-spaces
-  :defer t
-  :hook
-  (prog-mode . highlight-leading-spaces-mode))
+;; Load all the skeletons.  Loaded only once, as they are not idempotent.
+(require-parts (no-littering-expand-etc-file-name "skeletons/"))
 
-(setq evil-want-integration t
-      evil-want-C-i-jump nil
-      evil-want-C-u-scroll t
-      evil-want-keybinding nil)
+;; Load the machine-local config parts.
+(unless (getenv "EMACS_NO_LOCAL")
+  ;; Load ~/.emacs.d/local.el
+  (let ((local-lisp (expand-file-name "local" user-emacs-directory)))
+    (load local-lisp 'noerror))
+  ;; Load ~/.emacs.d/local.d/*.el
+  (let ((local-lisps (expand-file-name "local.d/" user-emacs-directory)))
+    (when (file-directory-p local-lisps)
+      (load-parts local-lisps))))
 
-(use-package evil-leader
-  :config
-  (global-evil-leader-mode)
-  (evil-leader/set-leader "<SPC>"))
-
-(use-package evil-collection
-  :after evil-leader
-  :init
-  (evil-collection-init))
-
-(use-package evil
-  :after evil-collection
-  :config
-  (evil-mode t))
-
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode))
-
-(use-package evil-nerd-commenter
-  :config
-  (evilnc-toggle-invert-comment-line-by-line))
-
-(use-package evil-exchange
-  :config
-  (evil-exchange-install))
-
-(use-package evil-args
-  :bind (:map evil-inner-text-objects-map
-              ("a" . evil-inner-arg)
-              :map evil-outer-text-objects-map
-              ("a" . evil-outer-arg)))
-
-(use-package evil-snipe
-  :config
-  (evil-snipe-mode t)
-  (evil-snipe-override-mode t)
-  :custom
-  (evil-snipe-scope 'visible)
-  (evil-snipe-repeat-scope 'whole-visible))
-
-(use-package evil-numbers)
-(use-package evil-matchit)
-(use-package evil-anzu
-  :defer t)
-
-(use-package avy
-  :init
-  (setq avy-all-windows t))
-
-(use-package ivy
-  :defer t
-  :init
-  (ivy-mode t)
-  :bind (:map ivy-minibuffer-map
-              ("RET" . ivy-alt-done)
-              ("C-<return>" . ivy-immediate-done)
-              ("C-j" . ivy-next-line)
-              ("C-k" . ivy-previous-line)
-              ("C-u" . ivy-scroll-down-command)
-              ("C-d" . ivy-scroll-up-command))
-  :custom
-  (ivy-wrap t)
-  (ivy-use-virtual-buffers t)
-  (ivy-count-format "(%d/%d) "))
-
-(use-package amx
-  :after ivy
-  :custom
-  (amx-backend 'auto)
-  :config
-  (amx-mode t))
-
-(use-package counsel
-  :after (ivy amx)
-  :init (counsel-mode t))
-
-(use-package swiper
-  :defer t
-  :after counsel
-  :bind ("C-s" . 'swiper-isearch))
-
-(use-package ivy-posframe
-  :after ivy
-  :custom
-  (ivy-posframe-display-functions-alist
-   '((t . ivy-posframe-display-at-frame-top-center)))
-  :config
-  (ivy-posframe-mode t)
-  (defun ivy-posframe-get-size ()
-    "The default functon used by `ivy-posframe-size-function'."
-    (list
-     :height ivy-posframe-height
-     :width ivy-posframe-width
-     :min-height (or ivy-posframe-min-height
-                     (let ((height (+ ivy-height 1)))
-                       (min height (or ivy-posframe-height height))))
-     :min-width (or ivy-posframe-min-width
-                    (let ((width (round (* (frame-width) 0.75))))
-                      (min width (or ivy-posframe-width width)))))))
-
-(use-package prescient
-  :custom
-  (prescient-history-length 200)
-  (prescient-save-file "~/.emacs.d/prescient-items")
-  (prescient-filter-method '(literal regexp))
-  :config
-  (prescient-persist-mode t))
-
-(use-package ivy-prescient
-  :after (counsel prescient)
-  :config
-  (ivy-prescient-mode))
-
-(use-package all-the-icons-ivy-rich
-  :init
-  (all-the-icons-ivy-rich-mode t)
-  :custom
-  (all-the-icons-ivy-rich-icon-size 0.8))
-
-(use-package ivy-rich
-  :after all-the-icons-ivy-rich
-  :init
-  (ivy-rich-mode t))
-
-(load "~/.emacs.d/languages")
-
-(use-package company
-  :defer t
-  :hook
-  (prog-mode . company-mode)
-  :custom
-  (company-idle-delay 0)
-  (company-minimum-prefix-length 1)
-  (company-tooltip-align-annotations t)
-  (company-tooltip-limit 10)
-  (company-require-match 'never)
-  (company-show-numbers t)
-  :bind (:map company-active-map
-              ("C-j" . company-select-next)
-              ("C-k" . company-select-previous)
-              ("<tab>" . company-complete-common)
-              ("RET" . company-complete-selection))
-  :config
-  (defvar my-prev-whitespace-mode nil)
-  (make-variable-buffer-local 'my-prev-whitespace-mode)
-  (defun pre-popup-draw ()
-    "Turn off whitespace mode before showing company complete tooltip"
-    (if whitespace-mode
-        (progn
-          (setq my-prev-whitespace-mode t)
-          (whitespace-mode -1)
-          (setq my-prev-whitespace-mode t))))
-  (defun post-popup-draw ()
-    "Restore previous whitespace mode after showing company tooltip"
-    (if my-prev-whitespace-mode
-        (progn
-          (whitespace-mode 1)
-          (setq my-prev-whitespace-mode nil))))
-  (advice-add 'company-pseudo-tooltip-unhide :before #'pre-popup-draw)
-  (advice-add 'company-pseudo-tooltip-hide :after #'post-popup-draw))
-
-(use-package ivy-xref
-  :defer t
-  :init
-  (when (>= emacs-major-version 27)
-    (setq xref-show-definitions-function #'ivy-xref-show-defs))
-  (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
-
-(use-package treemacs
-  :defer t
-  :custom
-  (treemacs-is-never-other-window t)
-  (treemacs-collapse-dirs 10)
-  :config
-  (treemacs-git-mode 'simple)
-  (treemacs-filewatch-mode t))
-
-(use-package treemacs-evil
-  :after treemacs evil)
-
-(use-package treemacs-all-the-icons
-  :after treemacs
-  :config
-  (treemacs-load-theme "all-the-icons"))
-
-(use-package ranger
-  :custom
-  (ranger-show-hidden t)
-  (ranger-cleanup-on-disable t)
-  (ranger-dont-show-binary t)
-  :config
-  (ranger-override-dired-mode t))
-
-(use-package magit
-  :defer t
-  :custom
-  (magit-display-buffer-function
-   #'magit-display-buffer-fullframe-status-v1))
-
-(use-package treemacs-magit
-  :after magit)
-
-(use-package esup
-  :pin melpa
-  :custom
-  (esup-depth 0)
-  :commands (esup))
-
-(load "~/.emacs.d/hotkeys")
+;; Load the defered config parts for CI runs.
+(when (getenv "EMACS_FORCE_EAGER")
+  (load-defered))
