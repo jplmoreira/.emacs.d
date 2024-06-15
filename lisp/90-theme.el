@@ -4,7 +4,7 @@
 (cond
 
  ((member "mononoki" (font-family-list))
-  (set-frame-font "mononoki 12" nil t))
+  (set-frame-font "mononoki 13" nil t))
 
  ((member "iosevka" (font-family-list))
   (set-frame-font "iosevka 11" nil t))
@@ -27,7 +27,7 @@
   (load-theme 'doom-tomorrow-night t)
 
   (set-face-attribute 'show-paren-match nil
-                      :weight 'extra-bold
+                      :weight 'bold
                       :foreground (face-background 'default)
                       :background (face-foreground 'warning)))
 

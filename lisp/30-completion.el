@@ -56,7 +56,6 @@
          ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
          ([remap project-switch-to-buffer]      . consult-project-buffer)
          ([remap yank-pop]                      . consult-yank-pop)
-         ([remap isearch-forward]               . consult-line)
          ([remap goto-line]                     . consult-goto-line))
   :general
   (jpl/leader-keys
@@ -65,7 +64,8 @@
     "fr" 'consult-ripgrep
     "fi" 'consult-git-grep
     "ff" 'consult-find
-    "sl" 'consult-flymake)
+    "sl" 'consult-flymake
+    "/"  'consult-line)
   :config
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref

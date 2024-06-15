@@ -49,15 +49,12 @@
   :config
   (global-evil-surround-mode 1))
 
-(use-package evil-nerd-commenter
-  :after (evil general)
+(use-package evil-commentary
+  :after evil
   :straight t
-  :general
-  (jpl/leader-keys
-    "ci" 'evilnc-comment-or-uncomment-lines
-    "ct" 'evilnc-comment-or-uncomment-to-the-line
-    "cl" 'evilnc-comment-operator
-    "cc" 'evilnc-copy-and-comment-operator))
+  :demand t
+  :config
+  (evil-commentary-mode))
 
 (use-package evil-matchit
   :after evil

@@ -19,6 +19,16 @@
   :straight t
   :mode "\\.go\\'")
 
+;; Typescript
+(use-package typescript-mode
+  :straight t
+  :mode "\\.tsx?\\'"
+  :custom
+  (typescript-indent-level 2))
+
+;; JSON
+(use-package json-mode :straight t)
+
 (use-package eglot
   :straight t
   :commands eglot
@@ -30,6 +40,8 @@
 
     go-mode
     rust-mode
+    json-mode
+    typescript-mode
     ) . eglot-ensure)
   :general
   (jpl/leader-keys
@@ -39,14 +51,16 @@
     "sr" 'eglot-rename
     "st" 'eglot-format
     "sa" 'eglot-code-actions
-    "sh" 'eglot-help-at-point
+    "sh" 'eglot-hover-eldoc-function
     "sfi" 'eglot-find-implementation
     "sft" 'eglot-find-typeDefinition
     "sfr" 'xref-find-references
     "sfp" 'xref-find-apropos
     "sfd" 'xref-find-definitions
     "sj" 'flymake-goto-next-error
-    "sk" 'flymake-goto-prev-error))
+    "sk" 'flymake-goto-prev-error)
+  :config
+  (setq completion-category-overrides '((eglot (styles orderless)))))
 
 ;; (use-package consult-eglot
 ;;   :after (eglot consult)

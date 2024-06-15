@@ -1,5 +1,11 @@
 ;;; -*- lexical-binding: t; -*-
 
+(use-package evil-goggles
+  :straight t
+  :after evil
+  :config
+  (evil-goggles-mode))
+
 (use-package rainbow-delimiters
   :straight t
   :hook
@@ -17,3 +23,16 @@
   :straight t
   :hook
   (prog-mode . highlight-leading-spaces-mode))
+
+(use-package tree-sitter
+  :if (version< emacs-version "29")
+  :demand t
+  :straight t
+  :hook (after-init . global-tree-sitter-mode)
+  :hook (tree-sitter-after-on . tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+  :if (version< emacs-version "29")
+  :after tree-sitter
+  :demand t
+  :straight t)

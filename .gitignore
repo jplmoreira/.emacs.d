@@ -1,4 +1,5 @@
 # Personal local files.
+elpa/
 secret/
 local.el
 early-local.el

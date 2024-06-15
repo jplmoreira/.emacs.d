@@ -54,3 +54,5 @@
         mac-right-option-modifier nil
         select-enable-clipboard t
         ns-use-native-fullscreen t))
+
+(setq exec-path (append exec-path '("~/.local/bin")))
