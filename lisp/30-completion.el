@@ -39,15 +39,16 @@
 
 (use-package mini-frame
   :straight t
-  :hook (after-init . mini-frame-mode)
+  ;; :hook (after-init . mini-frame-mode)
   :custom
   (mini-frame-show-parameters
    '((width . 0.6)
      (left . 0.5)))
 
   :config
-  (setq resize-mini-frames t
-        x-gtk-resize-child-frames 'resize-mode))
+  (setq resize-mini-frames nil
+        ;; x-gtk-resize-child-frames 'resize-mode
+        ))
 
 (use-package consult
   :straight t

@@ -36,3 +36,12 @@
   :after tree-sitter
   :demand t
   :straight t)
+
+(use-package treesit-auto
+  :if (not (version< emacs-version "29"))
+  :straight t
+  :custom (treesit-auto-install 'prompt)
+  :config (progn
+            (setq treesit-auto-langs '(python go rust typescript tsx))
+            (treesit-auto-add-to-auto-mode-alist 'all)
+            (global-treesit-auto-mode 1)))

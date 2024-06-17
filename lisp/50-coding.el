@@ -1,7 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 
 ;; Rust
-(use-package rust-mode
+(use-package rust-ts-mode
   :straight t
   :custom
   (rust-format-on-save t))
@@ -15,12 +15,12 @@
   :mode "\\.ya?ml\\'")
 
 ;; Go
-(use-package go-mode
+(use-package go-ts-mode
   :straight t
   :mode "\\.go\\'")
 
 ;; Typescript
-(use-package typescript-mode
+(use-package typescript-ts-mode
   :straight t
   :mode "\\.tsx?\\'"
   :custom
@@ -36,12 +36,12 @@
   ((sh-mode
     c-mode
     c++-mode
-    python-mode
+    python-ts-mode
 
-    go-mode
-    rust-mode
+    go-ts-mode
+    rust-ts-mode
     json-mode
-    typescript-mode
+    typescript-ts-mode
     ) . eglot-ensure)
   :general
   (jpl/leader-keys
