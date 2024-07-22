@@ -17,7 +17,11 @@
 ;; Go
 (use-package go-ts-mode
   :straight t
-  :mode "\\.go\\'")
+  :mode "\\.go\\'"
+  :hook
+  (before-save . gofmt-before-save)
+  :custom
+  (go-ts-mode-indent-offset 4))
 
 ;; Typescript
 (use-package typescript-ts-mode
@@ -28,6 +32,9 @@
 
 ;; JSON
 (use-package json-mode :straight t)
+
+;; Protobuf
+(use-package protobuf-mode :straight t)
 
 (use-package eglot
   :straight t

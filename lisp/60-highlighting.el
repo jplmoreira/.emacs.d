@@ -42,6 +42,6 @@
   :straight t
   :custom (treesit-auto-install 'prompt)
   :config (progn
-            (setq treesit-auto-langs '(python go rust typescript tsx))
+            (setq treesit-auto-langs '(python go rust typescript tsx gomod))
             (treesit-auto-add-to-auto-mode-alist 'all)
             (global-treesit-auto-mode 1)))

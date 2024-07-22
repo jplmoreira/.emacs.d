@@ -56,3 +56,4 @@
         ns-use-native-fullscreen t))
 
 (setq exec-path (append exec-path '("~/.local/bin")))
+(setq exec-path (append exec-path '("~/go/bin")))
