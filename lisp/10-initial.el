@@ -18,3 +18,11 @@
                (recentf-expand-file-name no-littering-etc-directory)))
 
 (use-package wgrep :straight t :demand t)
+
+(use-package exec-path-from-shell
+  :straight t
+  :config
+  (setq exec-path-from-shell-debug t)
+  (add-to-list 'exec-path-from-shell-variables "SSH_AUTH_SOCK")
+  (add-to-list 'exec-path-from-shell-variables "GPG_TTY")
+  (exec-path-from-shell-initialize))

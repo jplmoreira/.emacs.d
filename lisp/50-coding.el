@@ -36,6 +36,9 @@
 ;; Protobuf
 (use-package protobuf-mode :straight t)
 
+;; Solidity
+(use-package solidity-mode :straight t)
+
 (use-package eglot
   :straight t
   :commands eglot
@@ -67,7 +70,11 @@
     "sj" 'flymake-goto-next-error
     "sk" 'flymake-goto-prev-error)
   :config
-  (setq completion-category-overrides '((eglot (styles orderless)))))
+  (setq completion-category-overrides '((eglot (styles orderless))))
+
+  (add-to-list 'eglot-server-programs
+               `(rust-ts-mode . ("rust-analyzer" :initializationOptions
+                              (:cargo (:loadOutDirsFromCheck (:enable t)))))))
 
 ;; (use-package consult-eglot
 ;;   :after (eglot consult)
