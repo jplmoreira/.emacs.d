@@ -37,18 +37,12 @@
   ;; Tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
-(use-package mini-frame
+(use-package vertico-posframe
   :straight t
-  ;; :hook (after-init . mini-frame-mode)
+  :after vertico
+  :config (vertico-posframe-mode)
   :custom
-  (mini-frame-show-parameters
-   '((width . 0.6)
-     (left . 0.5)))
-
-  :config
-  (setq resize-mini-frames nil
-        ;; x-gtk-resize-child-frames 'resize-mode
-        ))
+  (vertico-posframe-poshandler #'posframe-poshandler-frame-top-center))
 
 (use-package consult
   :straight t
@@ -135,7 +129,7 @@
       `(orderless-regexp . ,(concat "\\." (substring word 1) (+orderless--consult-suffix))))))
 
   (defun consult--orderless-regexp-compiler (input type &rest _config)
-    (setq input (orderless-pattern-compiler input))
+    (setq input (cdr (orderless-compile input)))
     (cons
      (mapcar (lambda (r) (consult--convert-regexp r type)) input)
      (lambda (str) (orderless--highlight input t str))))
