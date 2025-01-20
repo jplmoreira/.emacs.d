@@ -59,12 +59,6 @@
   (magit-display-buffer-function
    #'magit-display-buffer-fullframe-status-v1))
 
-(use-package pinentry
-  :after magit
-  :straight t
-  :config
-  (pinentry-start))
-
 (use-package treemacs-magit
   :after treemacs
   :straight t
