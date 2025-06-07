@@ -17,14 +17,12 @@
   :straight t
   :hook (after-init . doom-modeline-mode))
 
-(use-package doom-themes
+(use-package catppuccin-theme
   :after doom-modeline
   :straight t
   :demand t
   :config
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t)
-  (load-theme 'doom-ayu-mirage t)
+  (load-theme 'catppuccin :no-confirm)
 
   (set-face-attribute 'show-paren-match nil
                       :weight 'bold
@@ -32,7 +30,7 @@
                       :background (face-foreground 'warning)))
 
 (use-package solaire-mode
-  :after doom-themes
+  :after catppuccin-theme
   :straight t
   :demand t
   :config
