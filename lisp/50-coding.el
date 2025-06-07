@@ -1,10 +1,18 @@
 ;;; -*- lexical-binding: t; -*-
 
 ;; Rust
-(use-package rust-ts-mode
+(use-package rust-mode
   :straight t
+  :mode "\\.rs\\'"
+  :init
+  (setq rust-mode-treesitter-derive t)
   :custom
   (rust-format-on-save t))
+
+;; Zig
+(use-package zig-mode
+  :straight t
+  :mode "\\.zig\\'")
 
 ;; Dockerfile
 (use-package dockerfile-mode :straight t)
@@ -49,7 +57,8 @@
     python-ts-mode
 
     go-ts-mode
-    rust-ts-mode
+    rust-mode
+    zig-mode
     json-mode
     typescript-ts-mode
     ) . eglot-ensure)
@@ -73,13 +82,15 @@
   (setq completion-category-overrides '((eglot (styles orderless))))
 
   (add-to-list 'eglot-server-programs
-               `(rust-ts-mode . ("rust-analyzer" :initializationOptions
-                              (:cargo (:loadOutDirsFromCheck (:enable t)))))))
+               `(rust-mode . ("rust-analyzer" :initializationOptions
+                              (:cargo (:loadOutDirsFromCheck (:enable t)))))
+               `(c++-mode . ("clangd" "--style={NamespaceIndentation: Inner}"))
+               ))
 
-;; (use-package consult-eglot
-;;   :after (eglot consult)
-;;   :straight t
-;;   :general
-;;   (jpl/leader-keys
-;;     :keymaps 'eglot-mode-map
-;;     "sy" 'consult-eglot-symbols))
+(use-package consult-eglot
+  :after (eglot consult)
+  :straight t
+  :general
+  (jpl/leader-keys
+    :keymaps 'eglot-mode-map
+    "sy" 'consult-eglot-symbols))

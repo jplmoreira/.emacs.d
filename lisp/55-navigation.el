@@ -21,6 +21,7 @@
             "pd"  'treemacs-remove-project-from-workspace
             "pr"  'treemacs-rename-project
             "pn"  'treemacs-next-project
+            "pp"  'treemacs-previous-project
             "pcc" 'treemacs-collapse-project
             "pco" 'treemacs-collapse-all-projects
             "wr"  'treemacs-rename-workspacea
@@ -54,7 +55,9 @@
   :straight t
   :general
   (jpl/leader-keys
-    "g" 'magit-status)
+    "gg" 'magit-status
+    "gd" 'magit-dispatch
+    "gf" 'magit-file-dispatch)
   :custom
   (magit-display-buffer-function
    #'magit-display-buffer-fullframe-status-v1))

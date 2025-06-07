@@ -24,7 +24,7 @@
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  (load-theme 'doom-tomorrow-night t)
+  (load-theme 'doom-ayu-mirage t)
 
   (set-face-attribute 'show-paren-match nil
                       :weight 'bold
