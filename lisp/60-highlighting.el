@@ -40,8 +40,8 @@
 (use-package treesit-auto
   :if (not (version< emacs-version "29"))
   :straight t
-  :custom (treesit-auto-install 'prompt)
-  :config (progn
-            (setq treesit-auto-langs '(python go typescript tsx gomod))
-            (treesit-auto-add-to-auto-mode-alist 'all)
-            (global-treesit-auto-mode 1)))
+  :custom (treesit-auto-install t)
+  :config
+  (setq treesit-auto-langs '(python rust go typescript tsx gomod))
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))

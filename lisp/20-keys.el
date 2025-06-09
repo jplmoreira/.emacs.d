@@ -20,7 +20,7 @@
     "l"  'windmove-right
     "e"  'find-file
     "b"  'switch-to-buffer
-    "db" 'kill-this-buffer
+    "db" 'kill-current-buffer
     "do" 'delete-other-windows
     "dd" 'kill-buffer-and-window))
 
