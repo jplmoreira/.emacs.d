@@ -25,9 +25,6 @@
 ;; Load all the config parts.
 (load-numbered-parts (expand-file-name "lisp/" user-emacs-directory))
 
-;; Load all the skeletons.  Loaded only once, as they are not idempotent.
-(require-parts (no-littering-expand-etc-file-name "skeletons/"))
-
 ;; Load the machine-local config parts.
 (unless (getenv "EMACS_NO_LOCAL")
   ;; Load ~/.emacs.d/local.el

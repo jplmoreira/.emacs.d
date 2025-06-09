@@ -52,7 +52,7 @@
 (use-package evil-commentary
   :after evil
   :straight t
-  :demand t
+  :defer t
   :config
   (evil-commentary-mode))
 

@@ -37,11 +37,16 @@
   :demand t
   :straight t)
 
+(defun jpl/treesit-auto-install-rust (langs)
+  (setq treesit-auto-langs (cons 'rust langs))
+  (treesit-auto-install-all)
+  (setq treesit-auto-langs langs))
+
 (use-package treesit-auto
   :if (not (version< emacs-version "29"))
   :straight t
   :custom (treesit-auto-install t)
   :config
-  (setq treesit-auto-langs '(python rust go typescript tsx gomod))
+  (jpl/treesit-auto-install-rust '(python go typescript tsx gomod))
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
